@@ -15,18 +15,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/about', function () {
-    return 'Page: About';
-});
+Route::get('contact', 'PostsController@showContact');
 
-Route::get('/contact', function () {
-    return 'Page: Contact';
-});
+Route::get('post/{category}/{date}/{id}', 'PostsController@showPost');
 
-Route::get('/post/{id}/{name}', function ($id, $name) {
-    return "Page: Contact: " . $id . ", Name: " . $name;
+Route::get('error', function(){
+    return view('errors.503');
 });
-
-Route::get('/admin/posts/demo', array("as"=>"admin.demo", function () {
-    return "it's a demo";
-}));
