@@ -1,5 +1,7 @@
 <?php
 
+use App\Post;
+
 /*
 |--------------------------------------------------------------------------
 | Application Routes
@@ -15,37 +17,64 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('insert', function(){
-
-    DB::insert('INSERT INTO posts(title, `fulltext`) VALUES (?,?)', ['蘋果新聞','天國近了']);
-
-});
-
 
 Route::get('read', function(){
 
-    $results = DB::select('SELECT * FROM posts WHERE id = ?', [2]);
-    // return $results;
-    // foreach ($results as $result) {
-    //     echo $result->title . "<br>\n";
-    //     echo $result->fulltext . "<br>\n";
+    // $posts = Post::all();
+
+    // $posts = Post::where('is_admin',0)
+    //             ->orderBy('id','desc')
+    //             ->take(2)
+    //             ->get();
+
+    // $post = Post::find(2);
+
+    $post = Post::where('is_admin',0)->first();
+
+    return $post->title;
+
+    // foreach($posts as $post) {
+    //     echo $post->id . ": " . $post->title . "<br>\n";
     // }
-    var_dump($results);
 
 });
 
 
-Route::get('update', function(){
 
-    $sql = DB::update('UPDATE posts SET title = "天氣很好" WHERE id = ?', [1]);
-    var_dump($sql);
+Route::get('insert/{title}/{fulltext}', function($title, $fulltext){
+
+    $post = new Post;
+
+    $post->title = "$title";
+    $post->fulltext = "$fulltext";
+
+    $post->save();
+
+});
+
+Route::get('create', function(){
+
+    Post::create([
+        'title'=>'我是鋼鐵人', 
+        'fulltext'=>'我很強',
+    ]);
 
 });
 
 
-Route::get('delete', function(){
 
-    $num = 2;
-    DB::delete('DELETE FROM posts WHERE id = ?', [$num]);
+
+Route::get('update/{id}/{title}/{fulltext}', function($id, $title, $fulltext){
+
+    // $post = Post::find($id);
+    // $post->title = "$title";
+    // $post->fulltext = "$fulltext";
+    // $post->save();
+
+    Post::where('id', $id)->where('is_admin',0)
+        ->update([
+            'title'=>$title, 
+            'fulltext'=>$fulltext
+        ]);
 
 });
