@@ -3,6 +3,7 @@
 use App\Post;
 use App\User;
 use App\Role;
+use App\Country;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,6 +19,46 @@ use App\Role;
 Route::get('/', function () {
     return view('welcome');
 });
+
+
+Route::get('user/{userid}/photo', function($userid){
+
+    $user = User::find($userid);
+
+    foreach ($user->photos as $photo){
+        return $photo;
+        // echo $photo->path;
+    }
+
+});
+
+
+Route::get('post/{postid}/photos', function($postid){
+
+    $post = Post::findOrFail($postid);
+    echo "文章標題: " . $post->title . "<br>\n";
+
+    echo "圖片路徑: " . "<br>\n";
+    foreach ($post->photos as $photo) {
+        echo $photo->path . "<br>\n";
+    }
+
+});
+
+
+
+
+
+Route::get('country/{countryid}/posts', function($countryid){
+
+    $country = Country::find($countryid);
+
+    foreach ($country->posts as $post) {
+        echo $post->title . "<br>\n";
+    }
+
+});
+
 
 
 Route::get('read', function(){
