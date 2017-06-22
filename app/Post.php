@@ -11,6 +11,11 @@ class Post extends Model
 
     protected $dates = ["deleted_at"];
 
+    protected $fillable = [
+        'title',
+        'fulltext'
+    ];
+
     public function user() {
         return $this->belongsTo('App\User');
     }
@@ -21,6 +26,10 @@ class Post extends Model
 
     public function photos() {
         return $this->morphMany('App\Photo', 'imageable');
+    }
+
+    public function tags() {
+        return $this->morphToMany('App\Tag', 'taggable');
     }
 
 }

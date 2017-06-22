@@ -4,6 +4,7 @@ use App\Post;
 use App\User;
 use App\Role;
 use App\Country;
+use App\Tag;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,6 +20,35 @@ use App\Country;
 Route::get('/', function () {
     return view('welcome');
 });
+
+
+Route::get('post/{postid}/tags', function($postid) {
+
+    $post = Post::find($postid);
+    echo "文章: " . $post->title . "<br>\n";
+
+    echo "標籤: ";
+    foreach ($post->tags as $tag) {
+        echo $tag->name . ", ";
+    }
+
+});
+
+Route::get('tag/{tagid}/posts', function($tagid) {
+
+    $tag = Tag::find($tagid);
+    echo "標籤: " . $tag->name . "<br>\n";
+
+    echo "<ol>";
+    foreach ($tag->posts as $post) {
+        echo "<li>" . $post->title . "</li>";
+    }
+    echo "</ol>";
+
+});
+
+
+
 
 
 Route::get('user/{userid}/photo', function($userid){
